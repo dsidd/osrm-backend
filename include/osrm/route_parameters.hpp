@@ -36,6 +36,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <string>
 #include <vector>
 
+#include "../../typedefs.h"
+
 struct RouteParameters
 {
     RouteParameters();
@@ -72,7 +74,7 @@ struct RouteParameters
 
     void addTimestamp(const unsigned timestamp);
 
-    void addBearing(const int timestamp, boost::spirit::qi::unused_type unused, bool& pass);
+    void addBearing(const int angle, boost::spirit::qi::unused_type unused, bool& pass);
 
     void setLanguage(const std::string &language);
 
@@ -102,7 +104,7 @@ struct RouteParameters
     std::string language;
     std::vector<std::string> hints;
     std::vector<unsigned> timestamps;
-    std::vector<int> bearings;
+    std::vector<Angle> bearings;
     std::vector<bool> uturns;
     std::vector<FixedPointCoordinate> coordinates;
 };

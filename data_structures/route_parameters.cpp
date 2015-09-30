@@ -33,6 +33,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <osrm/route_parameters.hpp>
 
 #include "../algorithms/polyline_compressor.hpp"
+#include "../typedefs.h"
 
 RouteParameters::RouteParameters()
     : zoom_level(18), print_instructions(false), alternate_route(true), geometry(true),
@@ -125,7 +126,7 @@ void RouteParameters::addBearing(const int bearing, boost::spirit::qi::unused_ty
     if (bearing < 0 || bearing > 359) return;
     if (!bearings.empty())
     {
-        bearings.back() = bearing;
+        bearings.back() = Angle(bearing);
         pass = true;
     }
 }

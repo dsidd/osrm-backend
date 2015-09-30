@@ -410,7 +410,7 @@ template <class EdgeDataT> class SharedDataFacade final : public BaseDataFacade<
     IncrementalFindPhantomNodeForCoordinate(const FixedPointCoordinate &input_coordinate,
                                             std::vector<PhantomNode> &resulting_phantom_node_vector,
                                             const unsigned number_of_results,
-                                            const int bearing = 0, const int range = 180) override final
+                                            const Angle bearing = Angle(0), const int range = 180) override final
     {
         if (!m_static_rtree.get() || CURRENT_TIMESTAMP != m_static_rtree->first)
         {
@@ -425,7 +425,7 @@ template <class EdgeDataT> class SharedDataFacade final : public BaseDataFacade<
         const FixedPointCoordinate &input_coordinate,
         std::vector<std::pair<PhantomNode, double>> &resulting_phantom_node_vector,
         const double max_distance,
-        const int bearing = 0,
+        const Angle bearing = Angle(0),
         const int bearing_range = 180) override final
     {
         if (!m_static_rtree.get() || CURRENT_TIMESTAMP != m_static_rtree->first)

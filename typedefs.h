@@ -30,6 +30,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include <limits>
 
+#include "strong_typedef.hpp"
+
 // Necessary workaround for Windows as VS doesn't implement C99
 #ifdef _MSC_VER
 #define WIN32_LEAN_AND_MEAN
@@ -47,5 +49,7 @@ static const EdgeID SPECIAL_EDGEID = std::numeric_limits<unsigned>::max();
 static const unsigned INVALID_NAMEID = std::numeric_limits<unsigned>::max();
 static const unsigned INVALID_COMPONENTID = std::numeric_limits<unsigned>::max();
 static const EdgeWeight INVALID_EDGE_WEIGHT = std::numeric_limits<int>::max();
+
+OSRM_STRONG_TYPEDEF(int, Angle);
 
 #endif /* TYPEDEFS_H */

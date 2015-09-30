@@ -92,7 +92,7 @@ template <class DataFacadeT> class MapMatchingPlugin : public BasePlugin
     }
 
     bool getCandidates(const std::vector<FixedPointCoordinate> &input_coords,
-                      const std::vector<int> &input_bearings,
+                      const std::vector<Angle> &input_bearings,
                       const double gps_precision,
                       std::vector<double> &sub_trace_lengths,
                       osrm::matching::CandidateLists &candidates_lists)
@@ -128,7 +128,7 @@ template <class DataFacadeT> class MapMatchingPlugin : public BasePlugin
 
             std::vector<std::pair<PhantomNode, double>> candidates;
             // Use bearing values if supplied, otherwise fallback to 0,180 defaults
-            auto bearing = input_bearings.size() > 0 ? input_bearings[current_coordinate] : 0;
+            auto bearing = input_bearings.size() > 0 ? input_bearings[current_coordinate] : Angle(0);
             auto range = input_bearings.size() > 0 ? 10 : 180;
             facade->IncrementalFindPhantomNodeForCoordinateWithMaxDistance(
                     input_coords[current_coordinate], candidates, query_radius,

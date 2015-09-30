@@ -505,35 +505,35 @@ BOOST_AUTO_TEST_CASE(rectangle_test)
 BOOST_AUTO_TEST_CASE(bearing_range_test)
 {
     // Simple, non-edge-case checks
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(45, 45, 10));
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(35, 45, 10));
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(55, 45, 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(45), Angle(45), 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(35), Angle(45), 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(55), Angle(45), 10));
 
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(34, 45, 10));
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(56, 45, 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(34), Angle(45), 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(56), Angle(45), 10));
 
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(34, 45, 10));
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(56, 45, 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(34), Angle(45), 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(56), Angle(45), 10));
 
     // When angle+limit goes > 360
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(359, 355, 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(359), Angle(355), 10));
 
     // When angle-limit goes < 0
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(359, 5, 10));
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(354, 5, 10));
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(16, 5, 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(359), Angle(5), 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(354), Angle(5), 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(16), Angle(5), 10));
 
 
     // Checking other cases of wraparound
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(359, -5, 10));
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(344, -5, 10));
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(6, -5, 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(359), Angle(-5), 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(344), Angle(-5), 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(6), Angle(-5), 10));
 
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(-1, 5, 10));
-    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(-6, 5, 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(-1), Angle(5), 10));
+    BOOST_CHECK_EQUAL(false, TestStaticRTree::IsBearingWithinBounds(Angle(-6), Angle(5), 10));
 
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(-721, 5, 10));
-    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(719, 5, 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(-721), Angle(5), 10));
+    BOOST_CHECK_EQUAL(true, TestStaticRTree::IsBearingWithinBounds(Angle(719), Angle(5), 10));
 
 }
 
@@ -565,11 +565,11 @@ BOOST_AUTO_TEST_CASE(bearing_tests)
     BOOST_CHECK_EQUAL(results.back().reverse_node_id, 1);
 
     results.clear();
-    rtree.IncrementalFindPhantomNodeForCoordinate( input, results, 5, 270, 10);
+    rtree.IncrementalFindPhantomNodeForCoordinate( input, results, 5, Angle(270), 10);
     BOOST_CHECK_EQUAL(results.size(), 0);
 
     results.clear();
-    rtree.IncrementalFindPhantomNodeForCoordinate( input, results, 5, 45, 10);
+    rtree.IncrementalFindPhantomNodeForCoordinate( input, results, 5, Angle(45), 10);
     BOOST_CHECK_EQUAL(results.size(), 2);
     BOOST_CHECK_EQUAL(results[0].forward_node_id, 1);
     BOOST_CHECK_EQUAL(results[0].reverse_node_id, SPECIAL_NODEID);
@@ -582,11 +582,11 @@ BOOST_AUTO_TEST_CASE(bearing_tests)
     BOOST_CHECK_EQUAL(distance_results.size(), 2);
 
     distance_results.clear();
-    rtree.IncrementalFindPhantomNodeForCoordinateWithDistance( input, distance_results, 11000, 270, 10 );
+    rtree.IncrementalFindPhantomNodeForCoordinateWithDistance( input, distance_results, 11000, Angle(270), 10 );
     BOOST_CHECK_EQUAL(distance_results.size(), 0);
 
     distance_results.clear();
-    rtree.IncrementalFindPhantomNodeForCoordinateWithDistance( input, distance_results, 11000, 45, 10 );
+    rtree.IncrementalFindPhantomNodeForCoordinateWithDistance( input, distance_results, 11000, Angle(45), 10 );
     BOOST_CHECK_EQUAL(distance_results.size(), 2);
     BOOST_CHECK_EQUAL(distance_results[0].first.forward_node_id, 1);
     BOOST_CHECK_EQUAL(distance_results[0].first.reverse_node_id, SPECIAL_NODEID);
