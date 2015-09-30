@@ -87,9 +87,9 @@ void Benchmark(BenchStaticRTree &rtree, unsigned num_queries)
         for (const auto &q : queries)
         {
             phantom_node_vector.clear();
-            rtree.IncrementalFindPhantomNodeForCoordinate(q, phantom_node_vector, 3, num_results);
+            rtree.IncrementalFindPhantomNodeForCoordinate(q, phantom_node_vector, 3, Angle(0), 180, 1100, num_results);
             phantom_node_vector.clear();
-            rtree.IncrementalFindPhantomNodeForCoordinate(q, phantom_node_vector, 17, num_results);
+            rtree.IncrementalFindPhantomNodeForCoordinate(q, phantom_node_vector, 17, Angle(0), 180, 1100, num_results);
         }
         TIMER_STOP(query_phantom);
 
@@ -143,9 +143,9 @@ void Benchmark(BenchStaticRTree &rtree, unsigned num_queries)
         for (const auto &q : queries)
         {
             phantom_node_vector.clear();
-            rtree.IncrementalFindPhantomNodeForCoordinate(q, phantom_node_vector, 3, num_results);
+            rtree.IncrementalFindPhantomNodeForCoordinate(q, phantom_node_vector, 3, Angle(0), 180, 1100, num_results);
             phantom_node_vector.clear();
-            rtree.IncrementalFindPhantomNodeForCoordinate(q, phantom_node_vector, 17, num_results);
+            rtree.IncrementalFindPhantomNodeForCoordinate(q, phantom_node_vector, 17, Angle(0), 180, 1100, num_results);
         }
         TIMER_STOP(query_phantom);
 

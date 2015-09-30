@@ -8,8 +8,8 @@
 //
 // Example usage:
 //
-//   OSRM_STRONG_TYPEDEF(int,Angle);
-//   OSRM_STRONG_TYPEDEF(int,Distance);
+//   OSRM_STRONG_TYPEDEF(int,Angle)
+//   OSRM_STRONG_TYPEDEF(int,Distance)
 //
 //   Angle a(1);
 //   Distance b(2);
