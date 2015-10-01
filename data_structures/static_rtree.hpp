@@ -664,8 +664,8 @@ class StaticRTree
         if (range <= 0) return false;
 
         // Map both bearings into positive modulo 360 space
-        const int normalized_B = (int(B) < 0)?(int(B) % 360)+360:(int(B) % 360);
-        const int normalized_A = (int(A) < 0)?(int(A) % 360)+360:(int(A) % 360);
+        const int normalized_B = (Angle_to_int(B) < 0)?(Angle_to_int(B) % 360)+360:(Angle_to_int(B) % 360);
+        const int normalized_A = (Angle_to_int(A) < 0)?(Angle_to_int(A) % 360)+360:(Angle_to_int(A) % 360);
 
         if (normalized_B - range < 0)
         {
@@ -786,9 +786,9 @@ class StaticRTree
                                 m_coordinate_list->at(current_segment.u),
                                 m_coordinate_list->at(current_segment.v)));
 
-                const Angle backward_edge_bearing ((int(forward_edge_bearing) + 180) > 360 
-                                                      ? (int(forward_edge_bearing) - 180) 
-                                                      : (int(forward_edge_bearing) + 180));
+                const Angle backward_edge_bearing ((Angle_to_int(forward_edge_bearing) + 180) > 360
+                                                      ? (Angle_to_int(forward_edge_bearing) - 180)
+                                                      : (Angle_to_int(forward_edge_bearing) + 180));
 
                 const bool forward_bearing_valid = IsBearingWithinBounds(forward_edge_bearing, filter_bearing, filter_bearing_range);
                 const bool backward_bearing_valid = IsBearingWithinBounds(backward_edge_bearing, filter_bearing, filter_bearing_range);
@@ -957,9 +957,9 @@ class StaticRTree
                                 m_coordinate_list->at(current_segment.u),
                                 m_coordinate_list->at(current_segment.v)));
 
-                const Angle backward_edge_bearing ((int(forward_edge_bearing) + 180) > 360 
-                                                      ? (int(forward_edge_bearing) - 180) 
-                                                      : (int(forward_edge_bearing) + 180));
+                const Angle backward_edge_bearing ((Angle_to_int(forward_edge_bearing) + 180) > 360
+                                                      ? (Angle_to_int(forward_edge_bearing) - 180)
+                                                      : (Angle_to_int(forward_edge_bearing) + 180));
 
                 const bool forward_bearing_valid = IsBearingWithinBounds(forward_edge_bearing, filter_bearing, filter_bearing_range);
                 const bool backward_bearing_valid = IsBearingWithinBounds(backward_edge_bearing, filter_bearing, filter_bearing_range);
