@@ -262,9 +262,6 @@ int extractor::run()
 
         TIMER_STOP(extracting);
         SimpleLogger().Write() << "extraction finished after " << TIMER_SEC(extracting) << "s";
-        SimpleLogger().Write() << "To prepare the data for routing, run: "
-                               << "./osrm-prepare " << config.output_file_name
-                               << std::endl;
     }
     catch (std::exception &e)
     {
@@ -316,8 +313,9 @@ int extractor::run()
         SimpleLogger().Write() << "Expansion  : " << (number_of_node_based_nodes / TIMER_SEC(expansion))
                         << " nodes/sec and " << ((max_edge_id + 1) / TIMER_SEC(expansion))
                         << " edges/sec";
-
-
+        SimpleLogger().Write() << "To prepare the data for routing, run: "
+                               << "./osrm-prepare " << config.output_file_name
+                               << std::endl;
     }
     catch (std::exception &e)
     {
