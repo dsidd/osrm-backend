@@ -282,12 +282,12 @@ int extractor::run()
 
         TIMER_START(expansion);
 
-        auto node_based_edge_list = osrm::make_unique<std::vector<EdgeBasedNode>>();;
+        std::vector<EdgeBasedNode> node_based_edge_list;
         DeallocatingVector<EdgeBasedEdge> edge_based_edge_list;
-        auto internal_to_external_node_map = osrm::make_unique<std::vector<QueryNode>>();
+        std::vector<QueryNode> internal_to_external_node_map;
         auto graph_size =
-            BuildEdgeExpandedGraph(*internal_to_external_node_map,
-                                   *node_based_edge_list, 
+            BuildEdgeExpandedGraph(internal_to_external_node_map,
+                                   node_based_edge_list, 
                                    edge_based_edge_list);
 
         auto number_of_node_based_nodes = graph_size.first;
@@ -298,16 +298,16 @@ int extractor::run()
         SimpleLogger().Write() << "building r-tree ...";
         TIMER_START(rtree);
 
-        FindComponents(max_edge_id, edge_based_edge_list, *node_based_edge_list);
+        FindComponents(max_edge_id, edge_based_edge_list, node_based_edge_list);
 
-        BuildRTree(*node_based_edge_list, *internal_to_external_node_map);
+        BuildRTree(node_based_edge_list, internal_to_external_node_map);
 
         TIMER_STOP(rtree);
 
         SimpleLogger().Write() << "writing node map ...";
-        WriteNodeMapping(std::move(internal_to_external_node_map));
+        WriteNodeMapping(internal_to_external_node_map);
 
-        const unsigned edges_crc32 = CalculateEdgeChecksum(std::move(node_based_edge_list));
+        const unsigned edges_crc32 = CalculateEdgeChecksum(node_based_edge_list);
         WriteEdgeBasedGraph(config.edge_graph_output_path, max_edge_id, edges_crc32, edge_based_edge_list);
 
         SimpleLogger().Write() << "Expansion  : " << (number_of_node_based_nodes / TIMER_SEC(expansion))
@@ -326,7 +326,7 @@ int extractor::run()
     return 0;
 }
 
-unsigned extractor::CalculateEdgeChecksum(std::unique_ptr<std::vector<EdgeBasedNode>> node_based_edge_list)
+unsigned extractor::CalculateEdgeChecksum(const std::vector<EdgeBasedNode> & node_based_edge_list)
 {
     RangebasedCRC32 crc32;
     if (crc32.using_hardware())
@@ -338,7 +338,7 @@ unsigned extractor::CalculateEdgeChecksum(std::unique_ptr<std::vector<EdgeBasedN
         SimpleLogger().Write() << "using software based CRC32 computation";
     }
 
-    const unsigned crc32_value = crc32(*node_based_edge_list);
+    const unsigned crc32_value = crc32(node_based_edge_list);
     SimpleLogger().Write() << "CRC32: " << crc32_value;
 
     return crc32_value;
@@ -548,6 +548,7 @@ extractor::BuildEdgeExpandedGraph(std::vector<QueryNode> &internal_to_external_n
         std::const_pointer_cast<RestrictionMap const>(restriction_map),
         internal_to_external_node_map, speed_profile);
 
+
     compressed_edge_container.SerializeInternalVector(config.geometry_output_path);
 
     edge_based_graph_factory.Run(config.edge_output_path, lua_state);
@@ -557,6 +558,11 @@ extractor::BuildEdgeExpandedGraph(std::vector<QueryNode> &internal_to_external_n
     edge_based_graph_factory.GetEdgeBasedNodes(node_based_edge_list);
     auto max_edge_id = edge_based_graph_factory.GetHighestEdgeID();
 
+    // danpat TODO: somewhere right around here, we will need to
+    // use the internal_to_external_node_map (which contains original OSM node ids)
+    // the edges from the compressed edge container
+    // and the edge-based-edges
+
     const std::size_t number_of_node_based_nodes = node_based_graph->GetNumberOfNodes();
     return std::make_pair(number_of_node_based_nodes, max_edge_id);
 }
@@ -565,14 +571,14 @@ extractor::BuildEdgeExpandedGraph(std::vector<QueryNode> &internal_to_external_n
 /**
   \brief Writing info on original (node-based) nodes
  */
-void extractor::WriteNodeMapping(std::unique_ptr<std::vector<QueryNode>> internal_to_external_node_map)
+void extractor::WriteNodeMapping(const std::vector<QueryNode> & internal_to_external_node_map)
 {
     boost::filesystem::ofstream node_stream(config.node_output_path, std::ios::binary);
-    const unsigned size_of_mapping = internal_to_external_node_map->size();
+    const unsigned size_of_mapping = internal_to_external_node_map.size();
     node_stream.write((char *)&size_of_mapping, sizeof(unsigned));
     if (size_of_mapping > 0)
     {
-        node_stream.write((char *)internal_to_external_node_map->data(),
+        node_stream.write((char *)internal_to_external_node_map.data(),
                           size_of_mapping * sizeof(QueryNode));
     }
     node_stream.close();

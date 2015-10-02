@@ -41,12 +41,12 @@ private:
     ExtractorConfig config;
     void SetupScriptingEnvironment(lua_State *myLuaState,
                                SpeedProfileProperties &speed_profile);
-    unsigned CalculateEdgeChecksum(std::unique_ptr<std::vector<EdgeBasedNode>> node_based_edge_list);
+    unsigned CalculateEdgeChecksum(const std::vector<EdgeBasedNode> & node_based_edge_list);
     std::pair<std::size_t, std::size_t>
     BuildEdgeExpandedGraph(std::vector<QueryNode> &internal_to_external_node_map,
                                        std::vector<EdgeBasedNode> &node_based_edge_list,
                                        DeallocatingVector<EdgeBasedEdge> &edge_based_edge_list);
-    void WriteNodeMapping(std::unique_ptr<std::vector<QueryNode>> internal_to_external_node_map);
+    void WriteNodeMapping(const std::vector<QueryNode> & internal_to_external_node_map);
     void FindComponents(unsigned max_edge_id, const DeallocatingVector<EdgeBasedEdge>& edges, std::vector<EdgeBasedNode>& nodes) const;
     void BuildRTree(const std::vector<EdgeBasedNode> &node_based_edge_list,
                     const std::vector<QueryNode> &internal_to_external_node_map);
