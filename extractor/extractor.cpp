@@ -263,7 +263,7 @@ int extractor::run()
         TIMER_STOP(extracting);
         SimpleLogger().Write() << "extraction finished after " << TIMER_SEC(extracting) << "s";
     }
-    catch (std::exception &e)
+    catch (const std::exception &e)
     {
         SimpleLogger().Write(logWARNING) << e.what();
         return 1;
@@ -317,7 +317,7 @@ int extractor::run()
                                << "./osrm-prepare " << config.output_file_name
                                << std::endl;
     }
-    catch (std::exception &e)
+    catch (const std::exception &e)
     {
         SimpleLogger().Write(logWARNING) << e.what();
         return 1;
